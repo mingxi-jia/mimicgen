@@ -123,6 +123,18 @@ def set_basic_settings(
         group=group, 
         values=[num_fail_demo_to_render],
     )
+    generator.add_param(
+        key="experiment.logging.log_wandb",
+        name="", 
+        group=group, 
+        values=[True],
+    )
+    generator.add_param(
+        key="experiment.logging.wandb_proj_name",
+        name="", 
+        group=group, 
+        values=["mimicgen"],
+    )
 
     return generator
 

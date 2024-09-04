@@ -132,6 +132,9 @@ class MG_Config(Config):
         self.experiment.num_fail_demo_to_render = 50    # maxumum number of failure demos to render to video
         self.experiment.log_every_n_attempts = 50       # logs important info every N generation attempts
 
+        self.experiment.logging.log_wandb = True
+        self.experiment.logging.wandb_proj_name = "mimicgen"
+
         # random seed for generation
         self.experiment.seed = 1
 

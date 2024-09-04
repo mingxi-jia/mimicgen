@@ -410,6 +410,59 @@ class MugCleanup_Config(MG_Config):
         )
         self.task.task_spec.do_not_lock_keys()
 
+class DrawerOpening_Config(MG_Config):
+    """
+    Corresponds to robosuite MugCleanup task and variants.
+    """
+    NAME = "drawer_opening"
+    TYPE = "robosuite"
+
+    def task_config(self):
+        """
+        This function populates the `config.task` attribute of the config, 
+        which has settings for each object-centric subtask in a task. Each 
+        dictionary should have kwargs for the @add_subtask method in the 
+        @MG_TaskSpec object.
+        """
+        self.task.task_spec.subtask_1 = dict(
+            object_ref="drawer", 
+            subtask_term_signal=None,
+            subtask_term_offset_range=None,
+            selection_strategy="random",
+            selection_strategy_kwargs=None,
+            action_noise=0.05,
+            num_interpolation_steps=5,
+            num_fixed_steps=0,
+            apply_noise_during_interpolation=False,
+        )
+        self.task.task_spec.do_not_lock_keys()
+
+class DrawerClosing_Config(MG_Config):
+    """
+    Corresponds to robosuite MugCleanup task and variants.
+    """
+    NAME = "drawer_closing"
+    TYPE = "robosuite"
+
+    def task_config(self):
+        """
+        This function populates the `config.task` attribute of the config, 
+        which has settings for each object-centric subtask in a task. Each 
+        dictionary should have kwargs for the @add_subtask method in the 
+        @MG_TaskSpec object.
+        """
+        self.task.task_spec.subtask_1 = dict(
+            object_ref="drawer", 
+            subtask_term_signal=None,
+            subtask_term_offset_range=None,
+            selection_strategy="random",
+            selection_strategy_kwargs=None,
+            action_noise=0.05,
+            num_interpolation_steps=5,
+            num_fixed_steps=0,
+            apply_noise_during_interpolation=False,
+        )
+        self.task.task_spec.do_not_lock_keys()
 
 class NutAssembly_Config(MG_Config):
     """

@@ -149,7 +149,7 @@ def prepare_src_dataset(
         name=env_interface_name,
         interface_type=env_interface_type,
         # NOTE: env_interface takes underlying simulation environment, not robomimic wrapper
-        env=env.base_env,
+        env=env.env,
     )
     print("Created environment interface: {}".format(env_interface))
     print("")

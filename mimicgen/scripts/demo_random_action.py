@@ -69,6 +69,12 @@ if __name__ == "__main__":
     # Load the desired controller
     options["controller_configs"] = load_controller_config(default_controller="OSC_POSE")
 
+    frame_skip = 1
+    options['controller_configs']['input_max'] = (frame_skip * np.array(options['controller_configs']['input_max'])).tolist()
+    options['controller_configs']['input_min'] = (frame_skip * np.array(options['controller_configs']['input_min'])).tolist()
+    options['controller_configs']['output_max'] = (frame_skip * np.array(options['controller_configs']['output_max'])).tolist()
+    options['controller_configs']['output_min'] = (frame_skip * np.array(options['controller_configs']['output_min'])).tolist()
+
     # initialize the task
     env = suite.make(
         **options,

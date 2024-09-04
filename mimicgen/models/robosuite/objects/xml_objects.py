@@ -179,10 +179,42 @@ class DrawerObject(MujocoXMLObject):
     def __init__(
             self,
             name,
-            joints=None):
+            joints=None,
+            initial_joint_position=None):
         path_to_cabinet_xml = os.path.join(XML_ASSETS_BASE_PATH, "objects/drawer.xml")
-        super().__init__(path_to_cabinet_xml,
+        
+        if initial_joint_position is not None:
+            self.initial_joint_position = initial_joint_position
+            # read default xml
+            folder = os.path.dirname(path_to_cabinet_xml)
+            tree = ET.parse(path_to_cabinet_xml)
+            root = tree.getroot()
+
+            # modify mesh scales
+            drawer_link = root.find("worldbody").find("body").find("body").find("body").find("body")
+            drawer_link.set("pos", f"0 {str(initial_joint_position)} 0.076")
+
+            # write modified xml (and make sure to postprocess any paths just in case)
+            xml_str = ET.tostring(root, encoding="utf8").decode("utf8")
+            # xml_str = postprocess_model_xml(xml_str)
+            time_str = str(time.time()).replace(".", "_")
+            new_xml_path = os.path.join(folder, "{}_{}.xml".format(time_str, os.getpid()))
+            f = open(new_xml_path, "w")
+            f.write(xml_str)
+            f.close()
+            # print(f"Write to {new_xml_path}")
+        else:
+            self.initial_joint_position = 0.
+            new_xml_path = path_to_cabinet_xml
+
+        
+        super().__init__(new_xml_path,
                          name=name, joints=None, obj_type="all", duplicate_collision_geoms=True)
+
+        if initial_joint_position is not None:
+            os.remove(new_xml_path)
+
+        
 
     # NOTE: had to manually set these to get placement sampler working okay
     @property

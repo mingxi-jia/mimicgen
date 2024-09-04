@@ -29,7 +29,7 @@ SRC_DATA_DIR = os.path.join(mimicgen.__path__[0], "../datasets/source")
 CONFIG_DIR = "/tmp/core_configs"
 
 # set base folder for newly generated datasets
-OUTPUT_FOLDER = "/tmp/core_datasets"
+OUTPUT_FOLDER = os.path.join(mimicgen.__path__[0], "../datasets/generated")
 
 # number of trajectories to generate (or attempt to generate)
 NUM_TRAJ = 1000
@@ -59,6 +59,8 @@ BASE_CONFIGS = [
     os.path.join(BASE_BASE_CONFIG_PATH, "hammer_cleanup.json"),
     os.path.join(BASE_BASE_CONFIG_PATH, "mug_cleanup.json"),
     os.path.join(BASE_BASE_CONFIG_PATH, "kitchen.json"),
+    os.path.join(BASE_BASE_CONFIG_PATH, "drawer_closing.json"),
+    os.path.join(BASE_BASE_CONFIG_PATH, "drawer_opening.json"),
 ]
 
 
@@ -224,6 +226,32 @@ def make_generators(base_configs):
             selection_strategy="random",
             selection_strategy_kwargs=None,
             subtask_term_offset_range=[[10, 20], [10, 20], [10, 20], [10, 20], [10, 20], [10, 20], None],
+        ),
+        # drawer_closing
+        dict(
+            dataset_path=os.path.join(SRC_DATA_DIR, "demo_drawer_closing_d2_10.hdf5"),
+            dataset_name="drawer_closing",
+            generation_path="{}/drawer_closing".format(OUTPUT_FOLDER),
+            # task_interface="MG_MugCleanup",
+            tasks=["DrawerClosing_D0", "DrawerClosing_D1", "DrawerClosing_D2"],
+            task_names=["D0", "D1", "D2"],
+            select_src_per_subtask=False,
+            selection_strategy="random",
+            selection_strategy_kwargs=None,
+            subtask_term_offset_range=[None],
+        ),
+        # drawer_opening
+        dict(
+            dataset_path=os.path.join(SRC_DATA_DIR, "demo_drawer_opening_d2_10.hdf5"),
+            dataset_name="drawer_opening",
+            generation_path="{}/drawer_opening".format(OUTPUT_FOLDER),
+            # task_interface="MG_MugCleanup",
+            tasks=["DrawerOpening_D0", "DrawerOpening_D1", "DrawerOpening_D2"],
+            task_names=["D0", "D1", "D2"],
+            select_src_per_subtask=False,
+            selection_strategy="random",
+            selection_strategy_kwargs=None,
+            subtask_term_offset_range=[None],
         ),
     ]
 
