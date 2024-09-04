@@ -26,10 +26,10 @@ from mimicgen.utils.file_utils import config_generator_to_script_lines
 SRC_DATA_DIR = os.path.join(mimicgen.__path__[0], "../datasets/source")
 
 # set base folder for where to copy each base config and generate new config files for data generation
-CONFIG_DIR = "/tmp/core_configs"
+CONFIG_DIR = os.path.join(mimicgen.__path__[0], "../datasets/core_configs")
 
 # set base folder for newly generated datasets
-OUTPUT_FOLDER = os.path.join(mimicgen.__path__[0], "../datasets/generated")
+OUTPUT_FOLDER = os.path.join(mimicgen.__path__[0], "../datasets/core")
 
 # number of trajectories to generate (or attempt to generate)
 NUM_TRAJ = 1000
