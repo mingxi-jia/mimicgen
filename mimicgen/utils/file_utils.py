@@ -170,10 +170,15 @@ def parse_source_dataset(
 
         # extract datagen info
         ep_datagen_info = ep_grp["datagen_info"]
+        # fix for subtask=1 tasks
+        if "subtask_term_signals" not in ep_datagen_info.keys():
+            signals_info = {'null': np.zeros(len(ep_datagen_info["eef_pose"][:]))}
+        else:
+            signals_info = { k : ep_datagen_info["subtask_term_signals"][k][:] for k in ep_datagen_info["subtask_term_signals"] }
         ep_datagen_info_obj = DatagenInfo(
             eef_pose=ep_datagen_info["eef_pose"][:],
             object_poses={ k : ep_datagen_info["object_poses"][k][:] for k in ep_datagen_info["object_poses"] },
-            subtask_term_signals={ k : ep_datagen_info["subtask_term_signals"][k][:] for k in ep_datagen_info["subtask_term_signals"] },
+            subtask_term_signals=signals_info,
             target_pose=ep_datagen_info["target_pose"][:],
             gripper_action=ep_datagen_info["gripper_action"][:],
         )
