@@ -30,6 +30,10 @@
         "num_demo_to_render": 50,
         "num_fail_demo_to_render": 50,
         "log_every_n_attempts": 50,
+        "logging": {
+            "log_wandb": true,
+            "wandb_proj_name": "mimicgen"
+        },
         "seed": 1
     },
     "obs": {
