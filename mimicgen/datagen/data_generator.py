@@ -240,6 +240,9 @@ class DataGenerator(object):
 
         # sample new task instance
         env.reset()
+        # run some random actions to get to a static initial state
+        for _ in range(10):
+            env.step(np.zeros(7))
         new_initial_state = env.get_state()
 
         # sample new subtask boundaries
