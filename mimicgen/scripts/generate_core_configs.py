@@ -23,16 +23,16 @@ from mimicgen.utils.file_utils import config_generator_to_script_lines
 
 
 # set path to folder containing src datasets
-SRC_DATA_DIR = os.path.join(mimicgen.__path__[0], "../datasets/source")
+SRC_DATA_DIR = "/mnt/30783d39-fb85-4ca4-a8da-e16e50e50b0f/data/mimicgen/raw_datasets/source"
 
 # set base folder for where to copy each base config and generate new config files for data generation
-CONFIG_DIR = os.path.join(mimicgen.__path__[0], "../datasets/core_configs")
+CONFIG_DIR = "/mnt/30783d39-fb85-4ca4-a8da-e16e50e50b0f/data/mimicgen/raw_datasets/generation_configs"
 
 # set base folder for newly generated datasets
-OUTPUT_FOLDER = os.path.join(mimicgen.__path__[0], "../datasets/core")
+OUTPUT_FOLDER = "/mnt/30783d39-fb85-4ca4-a8da-e16e50e50b0f/data/mimicgen/raw_datasets/generated"
 
 # number of trajectories to generate (or attempt to generate)
-NUM_TRAJ = 1000
+NUM_TRAJ = 600
 
 # whether to guarantee that many successful trajectories (e.g. keep running until that many successes, or stop at that many attempts)
 GUARANTEE = True
@@ -61,6 +61,7 @@ BASE_CONFIGS = [
     os.path.join(BASE_BASE_CONFIG_PATH, "kitchen.json"),
     os.path.join(BASE_BASE_CONFIG_PATH, "drawer_closing.json"),
     os.path.join(BASE_BASE_CONFIG_PATH, "drawer_opening.json"),
+    os.path.join(BASE_BASE_CONFIG_PATH, "block_lifting.json"),
 ]
 
 
@@ -248,6 +249,19 @@ def make_generators(base_configs):
             # task_interface="MG_MugCleanup",
             tasks=["DrawerOpening_D0", "DrawerOpening_D1", "DrawerOpening_D2"],
             task_names=["D0", "D1", "D2"],
+            select_src_per_subtask=False,
+            selection_strategy="random",
+            selection_strategy_kwargs=None,
+            subtask_term_offset_range=[None],
+        ),
+        # lifting
+        dict(
+            dataset_path=os.path.join(SRC_DATA_DIR, "robomimic_lift_ph_n200.hdf5"),
+            dataset_name="block_lifting",
+            generation_path="{}/block_lifting".format(OUTPUT_FOLDER),
+            # task_interface="MG_MugCleanup",
+            tasks=["Lift"],
+            task_names=["D0"],
             select_src_per_subtask=False,
             selection_strategy="random",
             selection_strategy_kwargs=None,
