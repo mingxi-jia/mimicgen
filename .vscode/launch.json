@@ -1,0 +1,141 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "get_dataset_info",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "mimicgen/robomimic/robomimic/scripts/get_dataset_info.py",
+            "console": "integratedTerminal",
+            "args": ["--dataset=/media/mingxi/home2/data/mimicgen/raw_datasets/core/stack_three_d1.hdf5", 
+                ]
+        },
+
+        {
+            "name": "controller demo",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "mimicgen/robosuite/robosuite/demos/demo_control.py",
+            "console": "integratedTerminal",
+        },
+        {
+            "name": "state to obs square robomimic parallel as folders",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "mimicgen/robomimic/robomimic/scripts/generate_robomimic_dataset.py",
+            "console": "integratedTerminal",
+            "args": ["--config=random"]
+        },
+        {
+            "name": "state to obs square robomimic parallel",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "mimicgen/robomimic/robomimic/scripts/dataset_states_to_obs.py",
+            "console": "integratedTerminal",
+            "args": ["--dataset=/media/mingxi/home2/data/mimicgen/raw_datasets/generated/block_lifting/demo_src_block_lifting_task_D0/demo.hdf5", 
+                    "--output_name=/mnt/30783d39-fb85-4ca4-a8da-e16e50e50b0f/data/mimicgen/hdf5_singleview_datasets/lift_d0_spaceview_rel.hdf5", 
+                    "--done_mode=2", 
+                    "--camera_height=128", 
+                    "--camera_width=128", 
+                    "--n=200",
+                    "--num_workers=16",
+                    "--exclude-next-obs",
+                    "--compress",
+                    "--main_camera=spaceview",
+                    "--depth",
+                    "--camera_names=spaceview robot0_eye_in_hand",
+                    // "--store_voxel",
+                ]
+        },
+        {
+            "name": "playback dataset",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "mimicgen/robomimic/robomimic/scripts/playback_dataset.py",
+            "console": "integratedTerminal",
+            "args": [
+                    // "--dataset=/mnt/30783d39-fb85-4ca4-a8da-e16e50e50b0f/data/mimicgen/datasets/core/square_d2.hdf5", 
+                    "--dataset=/home/mingxi/mingxi_ws/LanManip/mimicgen/datasets/core/drawer_opening/demo_src_drawer_opening_task_D1/tmp/date_12_17_2024_time_16_18_48.hdf5", 
+                    "--render_image_names=spaceview", 
+                    "--video_path=/tmp/playback_dataset.mp4", 
+                    "--n=1", 
+                ]
+        },
+        {
+            "name": "demo random action",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "mimicgen/scripts/demo_random_action.py",
+            "console": "integratedTerminal",
+        },
+        {
+            "name": "collect_human_demonstrations",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "mimicgen/robosuite/robosuite/scripts/collect_human_demonstrations.py",
+            "console": "integratedTerminal",
+            "args": ["--environment=DrawerOpening_D1"]
+        },
+        {
+            "name": "collect_pose_estimation_dataset",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "mimicgen/robosuite/robosuite/scripts/collect_pose_estimation_dataset.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--environment=Lift",
+                "--enable_render",
+        ]
+        },
+        
+        {
+            "name": "convert_robosuite",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "mimicgen/robomimic/robomimic/scripts/conversion/convert_robosuite.py",
+            "console": "integratedTerminal",
+            "args": ["--dataset=/home/mingxi/mingxi_ws/LanManip/mimicgen/mimicgen/robosuite/robosuite/models/assets/demonstrations/1734467428_2531788/demo.hdf5"]
+        },
+        {
+            "name": "prepare_src_dataset",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "mimicgen/scripts/prepare_src_dataset.py",
+            "console": "integratedTerminal",
+            "args": ["--dataset=/mnt/30783d39-fb85-4ca4-a8da-e16e50e50b0f/data/mimicgen/raw_datasets/robomimic/lift/ph/n200.hdf5", "--env_interface=MG_BlockLifting", "--env_interface_type=robosuite"]
+        },
+        {
+            "name": "generate_config_templates",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "mimicgen/scripts/generate_config_templates.py",
+            "console": "integratedTerminal",
+        },
+        {
+            "name": "generate_core_configs",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "mimicgen/scripts/generate_core_configs.py",
+            "console": "integratedTerminal",
+        },
+        {
+            "name": "generate_dataset",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "mimicgen/scripts/generate_dataset.py",
+            "console": "integratedTerminal",
+            "args": ["--config=/mnt/30783d39-fb85-4ca4-a8da-e16e50e50b0f/data/mimicgen/raw_datasets/generation_configs/demo_src_block_lifting_task_D0.json", "--auto-remove-exp"]
+        },
+    
+    ]
+}
