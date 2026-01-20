@@ -12,7 +12,7 @@ from robosuite.environments.manipulation.single_arm_env import SingleArmEnv
 from robosuite.models.arenas import TableArena
 from robosuite.models.objects import BoxObject
 from robosuite.models.tasks import ManipulationTask
-from robosuite.utils.placement_samplers import UniformRandomSampler
+from robosuite.utils.placement_samplers import UniformRandomSampler, SequentialCompositeSampler
 from robosuite.utils.observables import Observable, sensor
 from robosuite.environments.manipulation.stack import Stack
 
@@ -145,7 +145,12 @@ class Stack_D0(Stack, SingleArmEnv_MG):
         # Create placement initializer
         if self.placement_initializer is not None:
             self.placement_initializer.reset()
-            self.placement_initializer.add_objects(cubes)
+            if isinstance(self.placement_initializer, SequentialCompositeSampler):
+                # Add objects matching sampler order (cubeB first for collision checking)
+                for sampler, obj in zip(self.placement_initializer.samplers.values(), [self.cubeB, self.cubeA]):
+                    sampler.add_objects(obj)
+            else:
+                self.placement_initializer.add_objects(cubes)
         else:
             self.placement_initializer = UniformRandomSampler(
                 name="ObjectSampler",
@@ -229,7 +234,113 @@ class Stack_D1(Stack_D0):
             )
             for k in ["cubeA", "cubeB"]
         }
+    
 
+class Stack_D2(Stack_D0):
+    """
+    Fixed Second Cube initialization bounds.
+    """
+    def __init__(self, **kwargs):
+        assert "placement_initializer" not in kwargs, "this class defines its own placement initializer"
+
+        bounds = self._get_initial_placement_bounds()
+
+        # ensure cube symmetry
+        assert len(bounds) == 2
+        # for k in ["x", "y", "z_rot", "reference"]:
+        #     assert np.array_equal(np.array(bounds["cubeA"][k]), np.array(bounds["cubeB"][k]))
+
+        placement_initializer = SequentialCompositeSampler(name="ObjectSampler")
+        for name in ["cubeB", "cubeA"]:  # cubeB first so cubeA can check against it
+            placement_initializer.append_sampler(
+                sampler=UniformRandomSampler(
+                    name=f"{name}Sampler",
+                    x_range=bounds[name]["x"],
+                    y_range=bounds[name]["y"],
+                    rotation=bounds[name]["z_rot"],
+                    rotation_axis='z',
+                    ensure_object_boundary_in_range=False,
+                    ensure_valid_placement=True,
+                    reference_pos=bounds[name]["reference"],
+                    z_offset=0.01,
+                )
+            )
+
+        Stack.__init__(self, placement_initializer=placement_initializer, **kwargs)
+
+    def _get_initial_placement_bounds(self):
+        max_dim = 0.20
+
+        cubeA = {
+            "cubeA": dict(
+                x=(-max_dim, max_dim),
+                y=(-max_dim, 0),
+                z_rot=(0., 2. * np.pi),
+                reference=np.array((0, 0, 0.8)),
+            )
+        }
+
+        cubeB = {
+            "cubeB": dict(
+                x=(0., 0.),
+                y=(0, 0),
+                z_rot=(0., 0),
+                reference=np.array((0, 0, 0.8)),
+            )
+        }
+
+        return {**cubeA, **cubeB}
+    
+
+class Stack_D3(Stack_D2):
+    """
+    Fixed Second Cube initialization bounds.
+    """
+    def __init__(self, **kwargs):
+        assert "placement_initializer" not in kwargs, "this class defines its own placement initializer"
+
+        bounds = self._get_initial_placement_bounds()
+
+        placement_initializer = SequentialCompositeSampler(name="ObjectSampler")
+        for name in ["cubeB", "cubeA"]:  # cubeB first so cubeA can check against it
+            placement_initializer.append_sampler(
+                sampler=UniformRandomSampler(
+                    name=f"{name}Sampler",
+                    x_range=bounds[name]["x"],
+                    y_range=bounds[name]["y"],
+                    rotation=bounds[name]["z_rot"],
+                    rotation_axis='z',
+                    ensure_object_boundary_in_range=False,
+                    ensure_valid_placement=True,
+                    reference_pos=bounds[name]["reference"],
+                    z_offset=0.01,
+                )
+            )
+
+        Stack.__init__(self, placement_initializer=placement_initializer, **kwargs)
+
+    def _get_initial_placement_bounds(self):
+        max_dim = 0.20
+
+        cubeA = {
+            "cubeA": dict(
+                x=(-max_dim, max_dim),
+                y=(-max_dim, max_dim),
+                z_rot=(0., 2. * np.pi),
+                reference=np.array((0, 0, 0.8)),
+            )
+        }
+
+        cubeB = {
+            "cubeB": dict(
+                x=(0., 0.),
+                y=(0, 0),
+                z_rot=(0., 0),
+                reference=np.array((0, 0, 0.8)),
+            )
+        }
+
+        return {**cubeA, **cubeB}
 
 class StackThree(Stack_D0):
     """

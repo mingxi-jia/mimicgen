@@ -23,16 +23,16 @@ from mimicgen.utils.file_utils import config_generator_to_script_lines
 
 
 # set path to folder containing src datasets
-SRC_DATA_DIR = "/mnt/30783d39-fb85-4ca4-a8da-e16e50e50b0f/data/mimicgen/raw_datasets/source"
+SRC_DATA_DIR = "/home/mingxi/data/XEMB/mimicgen"
 
 # set base folder for where to copy each base config and generate new config files for data generation
-CONFIG_DIR = "/mnt/30783d39-fb85-4ca4-a8da-e16e50e50b0f/data/mimicgen/raw_datasets/generation_configs"
+CONFIG_DIR = "/home/mingxi/data/XEMB/mimicgen/generation_configs"
 
 # set base folder for newly generated datasets
-OUTPUT_FOLDER = "/mnt/30783d39-fb85-4ca4-a8da-e16e50e50b0f/data/mimicgen/raw_datasets/generated"
+OUTPUT_FOLDER = "/home/mingxi/data/XEMB/mimicgen/generated"
 
 # number of trajectories to generate (or attempt to generate)
-NUM_TRAJ = 600
+NUM_TRAJ = 200
 
 # whether to guarantee that many successful trajectories (e.g. keep running until that many successes, or stop at that many attempts)
 GUARANTEE = True
@@ -77,8 +77,8 @@ def make_generators(base_configs):
             dataset_name="stack",
             generation_path="{}/stack".format(OUTPUT_FOLDER),
             # task_interface="MG_Stack",
-            tasks=["Stack_D0", "Stack_D1"],
-            task_names=["D0", "D1"],
+            tasks=["Stack_D0", "Stack_D1", "Stack_D2", "Stack_D3"],
+            task_names=["D0", "D1", "D2", "D3"],
             select_src_per_subtask=True,
             selection_strategy="nearest_neighbor_object",
             selection_strategy_kwargs=dict(nn_k=3),
