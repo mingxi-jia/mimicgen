@@ -840,7 +840,68 @@ class Coffee_D2(Coffee_D1):
             ),
         )
 
+class Coffee_D3(Coffee_D0):
+    """
+    Similar to Coffee_D1, but put pod on the left, and machine on the right. Had to also move
+    machine closer to robot (in x) to get kinematics to work out.
+    """
+    def _get_initial_placement_bounds(self):
+        """
+        Internal function to get bounds for randomization of initial placements of objects (e.g.
+        what happens when env.reset is called). Should return a dictionary with the following
+        structure:
+            object_name
+                x: 2-tuple for low and high values for uniform sampling of x-position
+                y: 2-tuple for low and high values for uniform sampling of y-position
+                z_rot: 2-tuple for low and high values for uniform sampling of z-rotation
+                reference: np array of shape (3,) for reference position in world frame (assumed to be static and not change)
+        """
+        return dict(
+            coffee_machine=dict(
+                x=(-0.15, 0.15),
+                y=(0.18, 0.3),
+                z_rot=(2. * np.pi / 3., 4. * np.pi / 3.),
+                reference=self.table_offset,
+            ),
+            coffee_pod=dict(
+                x=(0.1, 0.1),
+                y=(-0.2, -0.2),
+                z_rot=(0.0, 0.0),
+                reference=self.table_offset,
+            ),
+        )
 
+class Coffee_D4(Coffee_D0):
+    """
+    Similar to Coffee_D1, but put pod on the left, and machine on the right. Had to also move
+    machine closer to robot (in x) to get kinematics to work out.
+    """
+    def _get_initial_placement_bounds(self):
+        """
+        Internal function to get bounds for randomization of initial placements of objects (e.g.
+        what happens when env.reset is called). Should return a dictionary with the following
+        structure:
+            object_name
+                x: 2-tuple for low and high values for uniform sampling of x-position
+                y: 2-tuple for low and high values for uniform sampling of y-position
+                z_rot: 2-tuple for low and high values for uniform sampling of z-rotation
+                reference: np array of shape (3,) for reference position in world frame (assumed to be static and not change)
+        """
+        return dict(
+            coffee_machine=dict(
+                x=(-0.02, 0.02),
+                y=(0.15, 0.25),
+                z_rot=(4. * np.pi / 5., 6. * np.pi / 5.),
+                reference=self.table_offset,
+            ),
+            coffee_pod=dict(
+                x=(0.1, 0.1),
+                y=(-0.2, -0.2),
+                z_rot=(0.0, 0.0),
+                reference=self.table_offset,
+            ),
+        )
+    
 class CoffeePreparation(Coffee):
     """
     Harder coffee task where the task starts with materials in drawer and coffee machine closed. The robot
