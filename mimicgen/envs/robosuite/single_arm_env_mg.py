@@ -38,14 +38,34 @@ class SingleArmEnv_MG(SingleArmEnv):
 
         # add customized cams in 'models/assets/arenas/table_arena.xml'
         customized_arena_xml = ET.fromstring(self.model.get_xml())
-        arena_cameras = customized_arena_xml.find('worldbody').findall('camera')
-        for child1 in tree:
-            if child1.tag == 'worldbody':
-                old_cams = child1.findall('camera')
-                for child2 in old_cams:
-                    child1.remove(child2)
-                for new_cam in arena_cameras:
-                    child1.append(new_cam)
+        arena_cameras = customized_arena_xml.findall(".//camera")
+        robot_camera_names = {
+            cam.get("name"): cam
+            for cam in arena_cameras
+            if cam.get("name") and "robot0" in cam.get("name")
+        }
+        world_camera_names = {
+            cam.get("name"): cam
+            for cam in arena_cameras
+            if cam.get("name") and "robot0" not in cam.get("name")
+        }
+
+        # Get existing camera names to avoid duplicates
+        existing_cameras = {cam.get("name") for cam in tree.findall(".//camera")}
+
+        # Find worldbody to append world cameras
+        worldbody = tree.find(".//worldbody")
+        if worldbody is not None:
+            for cam_name, cam_elem in world_camera_names.items():
+                if cam_name not in existing_cameras:
+                    worldbody.append(cam_elem)
+
+        # Find robot0_base body to append robot cameras
+        robot_base = tree.find(".//body[@name='robot0_base']")
+        if robot_base is not None:
+            for cam_name, cam_elem in robot_camera_names.items():
+                if cam_name not in existing_cameras:
+                    robot_base.append(cam_elem)
 
         # replace mesh and texture file paths
         root = tree
