@@ -81,6 +81,7 @@ class Kitchen_D0(KitchenEnv, SingleArmEnv_MG):
     Augment BUDS kitchen task for mimicgen.
     """
     def __init__(self, **kwargs):
+        kwargs.pop('camera_segmentations', None)
         KitchenEnv.__init__(self, **kwargs)
 
         # some additional variables for better success check

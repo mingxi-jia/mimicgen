@@ -37,6 +37,7 @@ class HammerCleanup_D0(HammerPlaceEnv, SingleArmEnv_MG):
     """
     def __init__(self, robot_init_qpos=None, **kwargs):
         self.robot_init_qpos = robot_init_qpos
+        kwargs.pop('camera_segmentations', None)
         HammerPlaceEnv.__init__(self, **kwargs)
 
     def edit_model_xml(self, xml_str):

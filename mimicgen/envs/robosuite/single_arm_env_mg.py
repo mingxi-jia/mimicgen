@@ -57,15 +57,18 @@ class SingleArmEnv_MG(SingleArmEnv):
         worldbody = tree.find(".//worldbody")
         if worldbody is not None:
             for cam_name, cam_elem in world_camera_names.items():
-                if cam_name not in existing_cameras:
-                    worldbody.append(cam_elem)
+                if cam_name in existing_cameras:
+                    worldbody.remove(tree.find(f".//camera[@name='{cam_name}']"))
+                worldbody.append(cam_elem)
 
         # Find robot0_base body to append robot cameras
-        robot_base = tree.find(".//body[@name='robot0_base']")
-        if robot_base is not None:
+        robot0_right_hand = tree.find(".//body[@name='robot0_right_hand']")
+        if robot0_right_hand is not None:
             for cam_name, cam_elem in robot_camera_names.items():
-                if cam_name not in existing_cameras:
-                    robot_base.append(cam_elem)
+                if 'eye_in_hand' in cam_name:
+                    if cam_name in existing_cameras:
+                        robot0_right_hand.remove(tree.find(f".//camera[@name='{cam_name}']"))
+                    robot0_right_hand.append(cam_elem)
 
         # replace mesh and texture file paths
         root = tree
