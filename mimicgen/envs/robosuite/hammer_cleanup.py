@@ -36,6 +36,11 @@ class HammerCleanup_D0(HammerPlaceEnv, SingleArmEnv_MG):
     Augment BUDS hammer place task for mimicgen.
     """
     def __init__(self, robot_init_qpos=None, **kwargs):
+        if robot_init_qpos is None:
+            robots = kwargs.get("robots", None)
+            robot_name = robots[0] if isinstance(robots, (list, tuple)) else robots
+            if robot_name == "UR5e":
+                robot_init_qpos = np.array([-0.307707, -1.530405, 2.036236, -2.051049, -1.560877, -1.883791])
         self.robot_init_qpos = robot_init_qpos
         kwargs.pop('camera_segmentations', None)
         HammerPlaceEnv.__init__(self, **kwargs)
@@ -318,6 +323,7 @@ class HammerCleanup_D1(HammerCleanup_D0):
         self.robots[0].robot_model.set_base_xpos(xpos)
 
         # Adjust initial robot joint configuration accordingly
+        
         if self.robot_init_qpos is not None:
             self.robots[0].init_qpos = self.robot_init_qpos
 
